@@ -224,13 +224,20 @@ namespace DimseLab
             TilføjRelayCommands();
 
             LavListeAfProjekter();
+            LavListeAfDimser();
+        }
 
-            Dimser = new ObservableCollection<Dims>() { new Dims("IR-modtager", new List<string>(), "", "", false, null),
+        private void LavListeAfDimser()
+        {
+            Dimser = new ObservableCollection<Dims>()
+            {
+                new Dims("IR-modtager", new List<string>(), "", "", false, null),
                 new Dims("IR-sender", new List<string>(), "", "", false, null),
-                new Dims("Lygte", new List<string>(),"","", false, null),
-                new Dims("Skruetrækker", new List<string>(),"", "", false, null),
-                new Dims("Badedyr",new List<string>(), "", "", false, null),
-                new Dims("Kaffemaskine", new List<string>(),"", "", false, null) };
+                new Dims("Lygte", new List<string>(), "", "", false, null),
+                new Dims("Skruetrækker", new List<string>(), "", "", false, null),
+                new Dims("Badedyr", new List<string>(), "", "", false, null),
+                new Dims("Kaffemaskine", new List<string>(), "", "", false, null)
+            };
         }
 
         private void TilføjRelayCommands()
@@ -311,7 +318,7 @@ namespace DimseLab
             {
                 if (SelectedDimsOversigt != null)
                 {
-                    if (!SelectedProjekt.Dimser.Contains(SelectedDimsOversigt))
+                    if (!SelectedProjekt.Dimser.Contains(SelectedDimsOversigt) && !SelectedDimsOversigt.Udlånt)
                     {
                         SelectedProjekt.Dimser.Add(SelectedDimsOversigt);
                         SelectedDimsOversigt.Projekt = SelectedProjekt;

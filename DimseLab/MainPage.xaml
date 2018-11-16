@@ -116,12 +116,12 @@
                                     <TextBlock Foreground="{Binding TextColor}" FontSize="11" Text="{Binding Udlånt}"></TextBlock>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Width="90" FontWeight="Bold" FontSize="11" Text="Til og med: "></TextBlock>
-                                    <TextBlock FontSize="11" Text="{Binding Afleveringsdato, Mode=TwoWay}"></TextBlock>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal">
                                     <TextBlock Width="90" FontWeight="Bold" FontSize="11" Text="Af: "></TextBlock>
                                     <TextBlock FontSize="11" Text="{Binding Projekt.Navn, Mode=TwoWay}"></TextBlock>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Width="90" FontWeight="Bold" FontSize="11" Text="Til og med: "></TextBlock>
+                                    <TextBlock FontSize="11" Text="{Binding Afleveringsdato, Mode=TwoWay}"></TextBlock>
                                 </StackPanel>
                             </StackPanel>
                         </DataTemplate>
