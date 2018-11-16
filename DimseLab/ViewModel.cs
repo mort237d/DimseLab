@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using DimseLab.Annotations;
 using GalaSoft.MvvmLight.Command;
@@ -19,6 +20,9 @@ namespace DimseLab
         private RelayCommand sletDeltagerCommand;
         private RelayCommand sletDimsCommand;
 
+        private RelayCommand ændreProjektCommand;
+        private RelayCommand ændreDeltagerCommand;
+
         private string _navnProjektTB, _beskrivelseProjektTB, deltagerCollectionProjektTB;
         private string _navnDeltagerTB, _emailDeltagerTB;
         private string _navnDimsTB;
@@ -27,7 +31,12 @@ namespace DimseLab
         private Deltager _selectedDeltager;
         private Dims _selectedDims;
 
-        public ObservableCollection<Projekt> _projekter; 
+        public ObservableCollection<Projekt> _projekter;
+        public ObservableCollection<Dims> _dimser;
+
+
+        private int btncount = 0;
+
         #endregion
 
         public ObservableCollection<Projekt> Projekter
@@ -36,6 +45,15 @@ namespace DimseLab
             set
             {
                 _projekter = value;
+                OnPropertyChanged();
+            }
+        }
+        public ObservableCollection<Dims> Dimser
+        {
+            get { return _dimser; }
+            set
+            {
+                _dimser = value; 
                 OnPropertyChanged();
             }
         }
@@ -130,10 +148,11 @@ namespace DimseLab
                 _navnDimsTB = value;
                 OnPropertyChanged();
             }
-        } 
+        }
         #endregion
 
-        #region Tilføj/slet command props
+        #region Tilføj/slet/ændre command props
+        #region Tilføj
         public RelayCommand TilføjProjektCommand
         {
             get { return tilføjProjektCommand; }
@@ -143,19 +162,17 @@ namespace DimseLab
         public RelayCommand TilføjDeltagerCommand
         {
             get { return tilføjDeltagerCommand; }
-            set
-            {
-                tilføjDeltagerCommand = value;
-                OnPropertyChanged();
-            }
+            set { tilføjDeltagerCommand = value; }
         }
 
         public RelayCommand TilføjDimsCommand
         {
             get { return tilføjDimsCommand; }
             set { tilføjDimsCommand = value; }
-        }
+        } 
+        #endregion
 
+        #region Slet
         public RelayCommand SletProjektCommand
         {
             get { return sletProjektCommand; }
@@ -172,7 +189,22 @@ namespace DimseLab
         {
             get { return sletDimsCommand; }
             set { sletDimsCommand = value; }
-        } 
+        }
+        #endregion
+
+        #region Ændre
+        public RelayCommand ÆndreDeltagerCommand
+        {
+            get { return ændreDeltagerCommand; }
+            set { ændreDeltagerCommand = value; }
+        }
+
+        public RelayCommand ÆndreProjektCommand
+        {
+            get { return ændreProjektCommand; }
+            set { ændreProjektCommand = value; }
+        }
+        #endregion
         #endregion
 
         public ViewModel()
@@ -180,6 +212,13 @@ namespace DimseLab
             TilføjRelayCommands();
 
             LavListeAfProjekter();
+
+            Dimser = new ObservableCollection<Dims>() { new Dims("IR-modtager", new List<string>(), DateTime.Now.ToString("d"), DateTime.Now.AddDays(14).ToString("d"), false),
+                new Dims("IR-sender", new List<string>(), DateTime.Now.ToString("d"), DateTime.Now.AddDays(14).ToString("d"), false),
+                new Dims("Lygte", new List<string>(), DateTime.Now.ToString("d"), DateTime.Now.AddDays(14).ToString("d"), false),
+                new Dims("Skruetrækker", new List<string>(), DateTime.Now.ToString("d"), DateTime.Now.AddDays(14).ToString("d"), false),
+                new Dims("Badedyr", new List<string>(), DateTime.Now.ToString("d"), DateTime.Now.AddDays(14).ToString("d"), false),
+                new Dims("Kaffemaskine", new List<string>(), DateTime.Now.ToString("d"), DateTime.Now.AddDays(14).ToString("d"), false) };
         }
 
         private void TilføjRelayCommands()
@@ -191,6 +230,9 @@ namespace DimseLab
             SletProjektCommand = new RelayCommand(sletProjekt);
             SletDeltagerCommand = new RelayCommand(sletDeltager);
             SletDimsCommand = new RelayCommand(sletDims);
+
+            ÆndreProjektCommand = new RelayCommand(ændreProjekt);
+            ÆndreDeltagerCommand = new RelayCommand(ændreDeltager);
         }
 
         private void LavListeAfProjekter()
@@ -208,7 +250,8 @@ namespace DimseLab
                         new Dims("IR-modtager", 
                             new List<string>() {"IR", "Modtager", "Robot"}, 
                             DateTime.Now.ToString("d"),
-                            DateTime.Now.AddDays(14).ToString("d"))
+                            DateTime.Now.AddDays(14).ToString("d"),
+                            true)
                     }),
                 new Projekt("Projekt 2", "Ild", 
                     new ObservableCollection<Deltager>()
@@ -221,14 +264,15 @@ namespace DimseLab
                         new Dims("lys-komponent", 
                             new List<string>() {"Lys", "Robot"}, 
                             DateTime.Now.ToString("d"),
-                            DateTime.Now.AddDays(14).ToString("d"))
+                            DateTime.Now.AddDays(14).ToString("d"),
+                            true)
                     })
             };
         }
 
 
         #region KnapFunktioner
-        public void tilføjProjekt()
+        private void tilføjProjekt()
         {
             if (NavnProjektTB != null && BeskrivelseProjektTB != null)
             {
@@ -237,7 +281,7 @@ namespace DimseLab
                 BeskrivelseProjektTB = null;
             }
         }
-        public void tilføjDeltager()
+        private void tilføjDeltager()
         {
             if (SelectedProjekt != null)
             {
@@ -249,30 +293,106 @@ namespace DimseLab
                 }
             }
         }
-        public void tilføjDims()
+        private void tilføjDims()
         {
             if (SelectedProjekt != null)
             {
                 if (NavnDimsTB != null)
                 {
-                    SelectedProjekt.Dimser.Add(new Dims(NavnDimsTB, new List<string>() { "1" }, DateTime.Now.ToString("d"), DateTime.Now.AddDays(14).ToString("d")));
+                    SelectedProjekt.Dimser.Add(new Dims(NavnDimsTB, new List<string>() { "1" }, DateTime.Now.ToString("d"), DateTime.Now.AddDays(14).ToString("d"), true));
                     NavnDimsTB = null;
                 }
             }
         }
 
-        public void sletProjekt()
+        private void sletProjekt()
         {
-            Projekter.Remove(SelectedProjekt);
+            if (SelectedProjekt != null)
+            {
+                Projekter.Remove(SelectedProjekt);
+            }
         }
         private void sletDeltager()
         {
-            SelectedProjekt.Deltagere.Remove(SelectedDeltager);
+            if (SelectedProjekt != null)
+            {
+                SelectedProjekt.Deltagere.Remove(SelectedDeltager);
+            }
         }
         private void sletDims()
         {
-            SelectedProjekt.Dimser.Remove(SelectedDims);
-        } 
+            if (SelectedProjekt != null)
+            {
+                SelectedProjekt.Dimser.Remove(SelectedDims);
+            }
+        }
+
+        private void ændreProjekt()
+        {
+            if (SelectedProjekt != null)
+            {
+                if (NavnProjektTB == null)
+                {
+                    NavnProjektTB = SelectedProjekt.Navn;
+                }
+                else if (NavnProjektTB != SelectedProjekt.Navn)
+                {
+                    SelectedProjekt.Navn = NavnProjektTB;
+                }
+
+                if (BeskrivelseProjektTB == null)
+                {
+                    BeskrivelseProjektTB = SelectedProjekt.Beskrivelse;
+                }
+                else if (BeskrivelseProjektTB != SelectedProjekt.Beskrivelse)
+                {
+                    SelectedProjekt.Beskrivelse = BeskrivelseProjektTB;
+                }
+
+                btncount++;
+
+                if (btncount == 2)
+                {
+                    NavnProjektTB = null;
+                    BeskrivelseProjektTB = null;
+
+                    btncount = 0;
+                }
+            }
+        }
+        private void ændreDeltager()
+        {
+            if (SelectedDeltager != null)
+            {
+                if (NavnDeltagerTB == null)
+                {
+                    NavnDeltagerTB = SelectedDeltager.Navn;
+                }
+                else if (NavnDeltagerTB != SelectedDeltager.Navn)
+                {
+                    SelectedDeltager.Navn = NavnDeltagerTB;
+                }
+
+                if (EmailDeltagerTB == null)
+                {
+                    EmailDeltagerTB = SelectedDeltager.Email;
+                }
+                else if (EmailDeltagerTB != SelectedDeltager.Email)
+                {
+                    SelectedDeltager.Email = EmailDeltagerTB;
+                }
+
+                btncount++;
+
+                if (btncount == 2)
+                {
+                    NavnDeltagerTB = null;
+                    EmailDeltagerTB = null;
+
+                    btncount = 0;
+                }
+            }
+        }
         #endregion
 
         #region Notify

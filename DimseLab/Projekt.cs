@@ -7,8 +7,8 @@ namespace DimseLab
 {
     class Projekt : INotifyPropertyChanged
     {
-        public string Navn { get; set; }
-        public string Beskrivelse { get; set; }
+        public string _navn;
+        public string _beskrivelse;
 
         public ObservableCollection<Deltager> _deltagere;
         public ObservableCollection<Deltager> Deltagere
@@ -28,6 +28,26 @@ namespace DimseLab
             set
             {
                 _dimser = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string Navn
+        {
+            get { return _navn; }
+            set
+            {
+                _navn = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string Beskrivelse
+        {
+            get { return _beskrivelse; }
+            set
+            {
+                _beskrivelse = value;
                 OnPropertyChanged();
             }
         }
