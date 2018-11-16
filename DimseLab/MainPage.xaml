@@ -63,10 +63,24 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel>
-                                <TextBlock FontSize="15" Text="{Binding Navn}"></TextBlock>
-                                <ListView ItemsSource="{Binding Keywords}" HorizontalContentAlignment="Left"></ListView>
-                                <TextBlock FontSize="11" Text="{Binding Udlånsdato}"></TextBlock>
-                                <TextBlock FontSize="11" Text="{Binding Afleveringsdato}"></TextBlock>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontWeight="Bold" FontSize="15" Text="Navn: "></TextBlock>
+                                    <TextBlock FontSize="15" Text="{Binding Navn}"></TextBlock>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontWeight="Bold" FontSize="11" Text="Keywords: "></TextBlock>
+                                    <ListView ItemsSource="{Binding Keywords}" HorizontalContentAlignment="Left"></ListView>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontWeight="Bold" FontSize="11" Text="Udlånsdato: "></TextBlock>
+                                    <TextBlock FontSize="11" Text="{Binding Udlånsdato}"></TextBlock>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontWeight="Bold" FontSize="11" Text="Afleveringsdato: "></TextBlock>
+                                    <TextBlock FontSize="11" Text="{Binding Afleveringsdato}"></TextBlock>
+                                </StackPanel>
+                                            
+                                
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>

@@ -177,8 +177,8 @@ namespace DimseLab
 
             _projekter = new ObservableCollection<Projekt>()
             {
-                new Projekt("Projekt 1", "Vand", new ObservableCollection<Deltager>(){new Deltager("Morten", "mail.dk")}, new ObservableCollection<Dims>(){new Dims("IR-modtager",new List<string>(){"IR", "Modtager", "Robot"}, DateTime.Now, DateTime.Now.AddDays(14)) }),
-                new Projekt("Projekt 2", "Ild", new ObservableCollection<Deltager>() {new Deltager("Mads", "mail.org")}, new ObservableCollection<Dims>(){new Dims("lys-komponent",new List<string>(){"Lys", "Robot"}, DateTime.Now, DateTime.Now.AddDays(14)) })
+                new Projekt("Projekt 1", "Vand", new ObservableCollection<Deltager>(){new Deltager("Morten", "mail.dk")}, new ObservableCollection<Dims>(){new Dims("IR-modtager",new List<string>(){"IR", "Modtager", "Robot"}, DateTime.Now.ToString("d"), DateTime.Now.AddDays(14).ToString("d")) }),
+                new Projekt("Projekt 2", "Ild", new ObservableCollection<Deltager>() {new Deltager("Mads", "mail.org")}, new ObservableCollection<Dims>(){new Dims("lys-komponent",new List<string>(){"Lys", "Robot"}, DateTime.Now.ToString("d"), DateTime.Now.AddDays(14).ToString("d")) })
             };
         }
 
@@ -211,7 +211,7 @@ namespace DimseLab
             {
                 if (NavnDimsTB != null)
                 {
-                    SelectedProjekt.Dimser.Add(new Dims(NavnDimsTB, new List<string>(){"1"}, DateTime.Now, DateTime.Now.AddDays(14)));
+                    SelectedProjekt.Dimser.Add(new Dims(NavnDimsTB, new List<string>(){"1"}, DateTime.Now.ToString("d"), DateTime.Now.AddDays(14).ToString("d")));
                     NavnDimsTB = null;
                 }
             }

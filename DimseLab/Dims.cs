@@ -10,10 +10,10 @@ namespace DimseLab
     {
         public string Navn { get; set; }
         public List<string> Keywords { get; set; }
-        public DateTime Udlånsdato { get; set; }
-        public DateTime Afleveringsdato { get; set; }
+        public string Udlånsdato { get; set; }
+        public string Afleveringsdato { get; set; }
 
-        public Dims(string navn, List<string> keywords, DateTime udlånsdato, DateTime afleveringsdato)
+        public Dims(string navn, List<string> keywords, string udlånsdato, string afleveringsdato)
         {
             Navn = navn;
             Keywords = keywords;
