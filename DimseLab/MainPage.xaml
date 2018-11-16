@@ -7,8 +7,76 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.DataContext>
+        <local:ViewModel/>
+    </Page.DataContext>
 
     <Grid>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel Orientation="Vertical">
+                <ListView ItemsSource="{Binding Projekter}" SelectedItem="{Binding SelectedProjekt, Mode=TwoWay}" Header="Projekter" MinWidth="150" MinHeight="150" BorderBrush="Black" BorderThickness="1">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock FontSize="15" Text="{Binding Navn}"></TextBlock>
+                                <TextBlock FontWeight="Bold" FontSize="11" Text="Beskrivelse:"></TextBlock>
+                                <TextBlock FontSize="11" Text="{Binding Beskrivelse}"></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <TextBlock FontWeight="Bold" Text="Navn"></TextBlock>
+                <TextBox Text="{Binding NavnProjektTB, Mode=TwoWay}"/>
+                <TextBlock FontWeight="Bold" Text="Beskrivelse"></TextBlock>
+                <TextBox Text="{Binding BeskrivelseProjektTB, Mode=TwoWay}"/>
+                <Button Content="Tilføj Projekt" HorizontalAlignment="Center" Margin="0,10,0,0" Command="{Binding TilføjProjektCommand}"></Button>
+                <Button Content="Slet Projekt" HorizontalAlignment="Center" Margin="0,10,0,0" Command="{Binding SletProjektCommand}"></Button>
+            </StackPanel>
+
+            <StackPanel Orientation="Vertical" Margin="10,0,0,0">
+                <ListView ItemsSource="{Binding SelectedProjekt.Deltagere, Mode=TwoWay}"  SelectedItem="{Binding SelectedDeltager, Mode=TwoWay}" Header="Deltagere" MinWidth="150" MinHeight="150" BorderBrush="Black" BorderThickness="1">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontWeight="Bold" FontSize="15" Text="Navn: "></TextBlock>
+                                    <TextBlock FontSize="15" Text="{Binding Navn}"></TextBlock>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontWeight="Bold" FontSize="11" Text="Email: "></TextBlock>
+                                    <TextBlock FontSize="11" Text="{Binding Email}"></TextBlock>
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <TextBlock FontWeight="Bold" Text="Navn"></TextBlock>
+                <TextBox Text="{Binding NavnDeltagerTB, Mode=TwoWay}"/>
+                <TextBlock FontWeight="Bold" Text="Email"></TextBlock>
+                <TextBox Text="{Binding EmailDeltagerTB, Mode=TwoWay}"/>
+                <Button Content="Tilføj Deltager" HorizontalAlignment="Center" Margin="0,10,0,0" Command="{Binding TilføjDeltagerCommand}"></Button>
+                <Button Content="Slet Deltager" HorizontalAlignment="Center" Margin="0,10,0,0" Command="{Binding SletDeltagerCommand}"></Button>
+            </StackPanel>
+
+            <StackPanel Orientation="Vertical" Margin="10,0,0,0">
+                <ListView ItemsSource="{Binding SelectedProjekt.Dimser, Mode=TwoWay}" SelectedItem="{Binding SelectedDims, Mode=TwoWay}" Header="Dimser" MinWidth="150" MinHeight="150" BorderBrush="Black" BorderThickness="1">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock FontSize="15" Text="{Binding Navn}"></TextBlock>
+                                <ListView ItemsSource="{Binding Keywords}" HorizontalContentAlignment="Left"></ListView>
+                                <TextBlock FontSize="11" Text="{Binding Udlånsdato}"></TextBlock>
+                                <TextBlock FontSize="11" Text="{Binding Afleveringsdato}"></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <TextBlock FontWeight="Bold" Text="Navn"></TextBlock>
+                <TextBox Text="{Binding NavnDimsTB, Mode=TwoWay}"/>
+                <Button Content="Lån Dims" HorizontalAlignment="Center" Margin="0,10,0,0" Command="{Binding TilføjDimsCommand}"></Button>
+                <Button Content="Aflever Dims" HorizontalAlignment="Center" Margin="0,10,0,0" Command="{Binding SletDimsCommand}"></Button>
+            </StackPanel>
+        </StackPanel>
 
     </Grid>
 </Page>
