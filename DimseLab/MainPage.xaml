@@ -5,6 +5,7 @@
     xmlns:local="using:DimseLab"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:interop="using:Windows.UI.Xaml.Interop"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.DataContext>
@@ -94,15 +95,13 @@
                     </ListView.ItemTemplate>
                 </ListView>
                 <TextBlock FontWeight="Bold" Text="Navn"></TextBlock>
-                <TextBox Text="{Binding NavnDimsTB, Mode=TwoWay}"/>
-                <Button Content="Lån Dims" HorizontalAlignment="Center" Margin="0,10,0,0" Command="{Binding TilføjDimsCommand}"></Button>
                 <Button Content="Aflever Dims" HorizontalAlignment="Center" Margin="0,10,0,0" Command="{Binding SletDimsCommand}"></Button>
             </StackPanel>
 
             <!-- Dimser til låns -->
             <StackPanel Orientation="Vertical" Margin="10,0,0,0">
                 <TextBlock FontWeight="Bold" Text="Oversigt over Dimser:"></TextBlock>
-                <ListView ItemsSource="{Binding Dimser, Mode=TwoWay}" SelectedItem="{Binding SelectedDims, Mode=TwoWay}" MinWidth="150" MinHeight="150" MaxHeight="500" BorderBrush="Black" BorderThickness="1">
+                <ListView ItemsSource="{Binding Dimser, Mode=TwoWay}" SelectedItem="{Binding SelectedDimsOversigt, Mode=TwoWay}" MinWidth="150" MinHeight="150" MaxHeight="500" BorderBrush="Black" BorderThickness="1">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel>
@@ -114,18 +113,21 @@
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Width="90" FontWeight="Bold" FontSize="11" Text="Udlånt?: "></TextBlock>
-                                    <TextBlock FontSize="11" Text="{Binding Udlånt}"></TextBlock>
+                                    <TextBlock Foreground="{Binding TextColor}" FontSize="11" Text="{Binding Udlånt}"></TextBlock>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Width="90" FontWeight="Bold" FontSize="11" Text="Til og med: "></TextBlock>
-                                    <TextBlock FontSize="11" Text="{Binding Afleveringsdato}"></TextBlock>
+                                    <TextBlock FontSize="11" Text="{Binding Afleveringsdato, Mode=TwoWay}"></TextBlock>
                                 </StackPanel>
-
-
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Width="90" FontWeight="Bold" FontSize="11" Text="Af: "></TextBlock>
+                                    <TextBlock FontSize="11" Text="{Binding Projekt.Navn, Mode=TwoWay}"></TextBlock>
+                                </StackPanel>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
+                <Button Content="Lån Dims" HorizontalAlignment="Center" Margin="0,10,0,0" Command="{Binding TilføjDimsCommand}"></Button>
             </StackPanel>
         </StackPanel>
 

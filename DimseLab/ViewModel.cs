@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using Windows.UI;
+using Windows.UI.Xaml.Media;
 using DimseLab.Annotations;
 using GalaSoft.MvvmLight.Command;
 
@@ -30,10 +32,10 @@ namespace DimseLab
         private Projekt _selectedProjekt;
         private Deltager _selectedDeltager;
         private Dims _selectedDims;
+        private Dims _selectedDimsOversigt;
 
         public ObservableCollection<Projekt> _projekter;
         public ObservableCollection<Dims> _dimser;
-
 
         private int btncount = 0;
 
@@ -87,7 +89,17 @@ namespace DimseLab
                 _selectedDims = value;
                 OnPropertyChanged();
             }
-        } 
+        }
+
+        public Dims SelectedDimsOversigt
+        {
+            get { return _selectedDimsOversigt; }
+            set
+            {
+                _selectedDimsOversigt = value;
+                OnPropertyChanged();
+            }
+        }
         #endregion
 
         #region Textbox props
@@ -213,12 +225,12 @@ namespace DimseLab
 
             LavListeAfProjekter();
 
-            Dimser = new ObservableCollection<Dims>() { new Dims("IR-modtager", new List<string>(), DateTime.Now.ToString("d"), DateTime.Now.AddDays(14).ToString("d"), false),
-                new Dims("IR-sender", new List<string>(), DateTime.Now.ToString("d"), DateTime.Now.AddDays(14).ToString("d"), false),
-                new Dims("Lygte", new List<string>(), DateTime.Now.ToString("d"), DateTime.Now.AddDays(14).ToString("d"), false),
-                new Dims("Skruetrækker", new List<string>(), DateTime.Now.ToString("d"), DateTime.Now.AddDays(14).ToString("d"), false),
-                new Dims("Badedyr", new List<string>(), DateTime.Now.ToString("d"), DateTime.Now.AddDays(14).ToString("d"), false),
-                new Dims("Kaffemaskine", new List<string>(), DateTime.Now.ToString("d"), DateTime.Now.AddDays(14).ToString("d"), false) };
+            Dimser = new ObservableCollection<Dims>() { new Dims("IR-modtager", new List<string>(), "", "", false, null),
+                new Dims("IR-sender", new List<string>(), "", "", false, null),
+                new Dims("Lygte", new List<string>(),"","", false, null),
+                new Dims("Skruetrækker", new List<string>(),"", "", false, null),
+                new Dims("Badedyr",new List<string>(), "", "", false, null),
+                new Dims("Kaffemaskine", new List<string>(),"", "", false, null) };
         }
 
         private void TilføjRelayCommands()
@@ -251,7 +263,7 @@ namespace DimseLab
                             new List<string>() {"IR", "Modtager", "Robot"}, 
                             DateTime.Now.ToString("d"),
                             DateTime.Now.AddDays(14).ToString("d"),
-                            true)
+                            true, null)
                     }),
                 new Projekt("Projekt 2", "Ild", 
                     new ObservableCollection<Deltager>()
@@ -265,7 +277,7 @@ namespace DimseLab
                             new List<string>() {"Lys", "Robot"}, 
                             DateTime.Now.ToString("d"),
                             DateTime.Now.AddDays(14).ToString("d"),
-                            true)
+                            true, null)
                     })
             };
         }
@@ -297,10 +309,17 @@ namespace DimseLab
         {
             if (SelectedProjekt != null)
             {
-                if (NavnDimsTB != null)
+                if (SelectedDimsOversigt != null)
                 {
-                    SelectedProjekt.Dimser.Add(new Dims(NavnDimsTB, new List<string>() { "1" }, DateTime.Now.ToString("d"), DateTime.Now.AddDays(14).ToString("d"), true));
-                    NavnDimsTB = null;
+                    if (!SelectedProjekt.Dimser.Contains(SelectedDimsOversigt))
+                    {
+                        SelectedProjekt.Dimser.Add(SelectedDimsOversigt);
+                        SelectedDimsOversigt.Projekt = SelectedProjekt;
+                        SelectedDimsOversigt.Udlånsdato = DateTime.Now.ToString("d");
+                        SelectedDimsOversigt.Afleveringsdato = DateTime.Now.AddDays(14).ToString("d");
+                        SelectedDimsOversigt.Udlånt = true;
+                        SelectedDimsOversigt.TextColor = new SolidColorBrush(Colors.Red);
+                    }
                 }
             }
         }
@@ -323,7 +342,14 @@ namespace DimseLab
         {
             if (SelectedProjekt != null)
             {
-                SelectedProjekt.Dimser.Remove(SelectedDims);
+                if (SelectedDims != null)
+                {
+                    Dimser[Dimser.IndexOf(SelectedDims)].Udlånsdato = "";
+                    Dimser[Dimser.IndexOf(SelectedDims)].Afleveringsdato = "";
+                    Dimser[Dimser.IndexOf(SelectedDims)].Udlånt = false;
+                    Dimser[Dimser.IndexOf(SelectedDims)].TextColor = new SolidColorBrush(Colors.Green);
+                    SelectedProjekt.Dimser.Remove(SelectedDims);
+                }
             }
         }
 
