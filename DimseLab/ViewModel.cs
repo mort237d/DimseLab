@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using DimseLab.Annotations;
 using GalaSoft.MvvmLight.Command;
@@ -12,6 +10,7 @@ namespace DimseLab
 {
     class ViewModel : INotifyPropertyChanged
     {
+        #region Field
         private RelayCommand tilføjProjektCommand;
         private RelayCommand tilføjDeltagerCommand;
         private RelayCommand tilføjDimsCommand;
@@ -28,7 +27,8 @@ namespace DimseLab
         private Deltager _selectedDeltager;
         private Dims _selectedDims;
 
-        public ObservableCollection<Projekt> _projekter;
+        public ObservableCollection<Projekt> _projekter; 
+        #endregion
 
         public ObservableCollection<Projekt> Projekter
         {
@@ -40,6 +40,7 @@ namespace DimseLab
             }
         }
 
+        #region Selected props
         public Projekt SelectedProjekt
         {
             get { return _selectedProjekt; }
@@ -50,6 +51,28 @@ namespace DimseLab
             }
         }
 
+        public Deltager SelectedDeltager
+        {
+            get { return _selectedDeltager; }
+            set
+            {
+                _selectedDeltager = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Dims SelectedDims
+        {
+            get { return _selectedDims; }
+            set
+            {
+                _selectedDims = value;
+                OnPropertyChanged();
+            }
+        } 
+        #endregion
+
+        #region Textbox props
         public string NavnDeltagerTB
         {
             get { return _navnDeltagerTB; }
@@ -69,6 +92,48 @@ namespace DimseLab
             }
         }
 
+        public string NavnProjektTB
+        {
+            get { return _navnProjektTB; }
+            set
+            {
+                _navnProjektTB = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string BeskrivelseProjektTB
+        {
+            get { return _beskrivelseProjektTB; }
+            set
+            {
+                _beskrivelseProjektTB = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string DeltagerCollectionProjektTB
+        {
+            get { return deltagerCollectionProjektTB; }
+            set
+            {
+                deltagerCollectionProjektTB = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string NavnDimsTB
+        {
+            get { return _navnDimsTB; }
+            set
+            {
+                _navnDimsTB = value;
+                OnPropertyChanged();
+            }
+        } 
+        #endregion
+
+        #region Tilføj/slet command props
         public RelayCommand TilføjProjektCommand
         {
             get { return tilføjProjektCommand; }
@@ -91,42 +156,6 @@ namespace DimseLab
             set { tilføjDimsCommand = value; }
         }
 
-        public string NavnProjektTB
-        {
-            get { return _navnProjektTB; }
-            set
-            {
-                _navnProjektTB = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string BeskrivelseProjektTB
-        {
-            get { return _beskrivelseProjektTB; }
-            set { _beskrivelseProjektTB = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string DeltagerCollectionProjektTB
-        {
-            get { return deltagerCollectionProjektTB; }
-            set { deltagerCollectionProjektTB = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string NavnDimsTB
-        {
-            get { return _navnDimsTB; }
-            set
-            {
-                _navnDimsTB = value;
-                OnPropertyChanged();
-            }
-        }
-
         public RelayCommand SletProjektCommand
         {
             get { return sletProjektCommand; }
@@ -143,29 +172,17 @@ namespace DimseLab
         {
             get { return sletDimsCommand; }
             set { sletDimsCommand = value; }
-        }
-
-        public Deltager SelectedDeltager
-        {
-            get { return _selectedDeltager; }
-            set
-            {
-                _selectedDeltager = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public Dims SelectedDims
-        {
-            get { return _selectedDims; }
-            set
-            {
-                _selectedDims = value;
-                OnPropertyChanged();
-            }
-        }
+        } 
+        #endregion
 
         public ViewModel()
+        {
+            TilføjRelayCommands();
+
+            LavListeAfProjekter();
+        }
+
+        private void TilføjRelayCommands()
         {
             TilføjProjektCommand = new RelayCommand(tilføjProjekt);
             TilføjDeltagerCommand = new RelayCommand(tilføjDeltager);
@@ -174,16 +191,43 @@ namespace DimseLab
             SletProjektCommand = new RelayCommand(sletProjekt);
             SletDeltagerCommand = new RelayCommand(sletDeltager);
             SletDimsCommand = new RelayCommand(sletDims);
+        }
 
+        private void LavListeAfProjekter()
+        {
             _projekter = new ObservableCollection<Projekt>()
             {
-                new Projekt("Projekt 1", "Vand", new ObservableCollection<Deltager>(){new Deltager("Morten", "mail.dk")}, new ObservableCollection<Dims>(){new Dims("IR-modtager",new List<string>(){"IR", "Modtager", "Robot"}, DateTime.Now.ToString("d"), DateTime.Now.AddDays(14).ToString("d")) }),
-                new Projekt("Projekt 2", "Ild", new ObservableCollection<Deltager>() {new Deltager("Mads", "mail.org")}, new ObservableCollection<Dims>(){new Dims("lys-komponent",new List<string>(){"Lys", "Robot"}, DateTime.Now.ToString("d"), DateTime.Now.AddDays(14).ToString("d")) })
+                new Projekt("Projekt 1", "Vand", 
+                    new ObservableCollection<Deltager>()
+                    {
+                        new Deltager("Morten", "mail.dk"),
+                        new Deltager("Kurt", "mail.com")
+                    },
+                    new ObservableCollection<Dims>()
+                    {
+                        new Dims("IR-modtager", 
+                            new List<string>() {"IR", "Modtager", "Robot"}, 
+                            DateTime.Now.ToString("d"),
+                            DateTime.Now.AddDays(14).ToString("d"))
+                    }),
+                new Projekt("Projekt 2", "Ild", 
+                    new ObservableCollection<Deltager>()
+                    {
+                        new Deltager("Mads", "mail.org"),
+                        new Deltager("Karsten", "mail.dk")
+                    },
+                    new ObservableCollection<Dims>()
+                    {
+                        new Dims("lys-komponent", 
+                            new List<string>() {"Lys", "Robot"}, 
+                            DateTime.Now.ToString("d"),
+                            DateTime.Now.AddDays(14).ToString("d"))
+                    })
             };
         }
 
 
-
+        #region KnapFunktioner
         public void tilføjProjekt()
         {
             if (NavnProjektTB != null && BeskrivelseProjektTB != null)
@@ -211,7 +255,7 @@ namespace DimseLab
             {
                 if (NavnDimsTB != null)
                 {
-                    SelectedProjekt.Dimser.Add(new Dims(NavnDimsTB, new List<string>(){"1"}, DateTime.Now.ToString("d"), DateTime.Now.AddDays(14).ToString("d")));
+                    SelectedProjekt.Dimser.Add(new Dims(NavnDimsTB, new List<string>() { "1" }, DateTime.Now.ToString("d"), DateTime.Now.AddDays(14).ToString("d")));
                     NavnDimsTB = null;
                 }
             }
@@ -228,7 +272,8 @@ namespace DimseLab
         private void sletDims()
         {
             SelectedProjekt.Dimser.Remove(SelectedDims);
-        }
+        } 
+        #endregion
 
         #region Notify
         public event PropertyChangedEventHandler PropertyChanged;

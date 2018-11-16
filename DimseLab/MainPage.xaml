@@ -14,7 +14,8 @@
     <Grid>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel Orientation="Vertical">
-                <ListView ItemsSource="{Binding Projekter}" SelectedItem="{Binding SelectedProjekt, Mode=TwoWay}" Header="Projekter" MinWidth="150" MinHeight="150" BorderBrush="Black" BorderThickness="1">
+                <AutoSuggestBox PlaceholderText="Søg efter projekt"></AutoSuggestBox>
+                <ListView ItemsSource="{Binding Projekter}" SelectedItem="{Binding SelectedProjekt, Mode=TwoWay}" Header="Projekter" MinWidth="150" MinHeight="150" MaxHeight="500" BorderBrush="Black" BorderThickness="1">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel>
@@ -34,7 +35,7 @@
             </StackPanel>
 
             <StackPanel Orientation="Vertical" Margin="10,0,0,0">
-                <ListView ItemsSource="{Binding SelectedProjekt.Deltagere, Mode=TwoWay}"  SelectedItem="{Binding SelectedDeltager, Mode=TwoWay}" Header="Deltagere" MinWidth="150" MinHeight="150" BorderBrush="Black" BorderThickness="1">
+                <ListView ItemsSource="{Binding SelectedProjekt.Deltagere, Mode=TwoWay}"  SelectedItem="{Binding SelectedDeltager, Mode=TwoWay}" Header="Deltagere" MinWidth="150" MinHeight="150" MaxHeight="500" BorderBrush="Black" BorderThickness="1">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel>
@@ -59,7 +60,7 @@
             </StackPanel>
 
             <StackPanel Orientation="Vertical" Margin="10,0,0,0">
-                <ListView ItemsSource="{Binding SelectedProjekt.Dimser, Mode=TwoWay}" SelectedItem="{Binding SelectedDims, Mode=TwoWay}" Header="Dimser" MinWidth="150" MinHeight="150" BorderBrush="Black" BorderThickness="1">
+                <ListView ItemsSource="{Binding SelectedProjekt.Dimser, Mode=TwoWay}" SelectedItem="{Binding SelectedDims, Mode=TwoWay}" Header="Dimser" MinWidth="150" MinHeight="150" MaxHeight="500" BorderBrush="Black" BorderThickness="1">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel>
