@@ -39,11 +39,11 @@
                         <DataTemplate>
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock FontWeight="Bold" FontSize="15" Text="Navn: "></TextBlock>
+                                    <TextBlock Width="50" FontWeight="Bold" FontSize="15" Text="Navn: "></TextBlock>
                                     <TextBlock FontSize="15" Text="{Binding Navn}"></TextBlock>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock FontWeight="Bold" FontSize="11" Text="Email: "></TextBlock>
+                                    <TextBlock Width="50" FontWeight="Bold" FontSize="11" Text="Email: "></TextBlock>
                                     <TextBlock FontSize="11" Text="{Binding Email}"></TextBlock>
                                 </StackPanel>
                             </StackPanel>
@@ -64,19 +64,19 @@
                         <DataTemplate>
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock FontWeight="Bold" FontSize="15" Text="Navn: "></TextBlock>
+                                    <TextBlock Width="90" FontWeight="Bold" FontSize="15" Text="Navn: "></TextBlock>
                                     <TextBlock FontSize="15" Text="{Binding Navn}"></TextBlock>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock FontWeight="Bold" FontSize="11" Text="Keywords: "></TextBlock>
+                                    <TextBlock Width="90" FontWeight="Bold" FontSize="11" Text="Keywords: "></TextBlock>
                                     <ListView ItemsSource="{Binding Keywords}" HorizontalContentAlignment="Left"></ListView>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock FontWeight="Bold" FontSize="11" Text="Udlånsdato: "></TextBlock>
+                                    <TextBlock Width="90" FontWeight="Bold" FontSize="11" Text="Udlånsdato: "></TextBlock>
                                     <TextBlock FontSize="11" Text="{Binding Udlånsdato}"></TextBlock>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock FontWeight="Bold" FontSize="11" Text="Afleveringsdato: "></TextBlock>
+                                    <TextBlock Width="90" FontWeight="Bold" FontSize="11" Text="Afleveringsdato: "></TextBlock>
                                     <TextBlock FontSize="11" Text="{Binding Afleveringsdato}"></TextBlock>
                                 </StackPanel>
                                             
