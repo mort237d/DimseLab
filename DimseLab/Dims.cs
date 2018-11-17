@@ -13,7 +13,8 @@ namespace DimseLab
 {
     class Dims : INotifyPropertyChanged
     {
-        private bool _udlånt;
+        private string _udlånt;
+        private string _udlånsInfo;
         private Brush _textColor;
         private Projekt _projekt;
 
@@ -22,7 +23,7 @@ namespace DimseLab
         public string Udlånsdato { get; set; }
         public string _afleveringsdato;
 
-        public bool Udlånt
+        public string Udlånt
         {
             get { return _udlånt; }
             set
@@ -62,13 +63,24 @@ namespace DimseLab
             }
         }
 
-        public Dims(string navn, List<string> keywords, string udlånsdato, string afleveringsdato, bool udlånt, Projekt projekt)
+        public string UdlånsInfo
+        {
+            get { return _udlånsInfo; }
+            set
+            {
+                _udlånsInfo = value; 
+                OnPropertyChanged();
+            }
+        }
+
+        public Dims(string navn, List<string> keywords, string udlånsdato, string afleveringsdato, string udlånt, string udlånsinfo, Projekt projekt)
         {
             Navn = navn;
             Keywords = keywords;
             Udlånsdato = udlånsdato;
             Afleveringsdato = afleveringsdato;
             Udlånt = udlånt;
+            UdlånsInfo = udlånsinfo;
 
             Projekt = projekt;
 

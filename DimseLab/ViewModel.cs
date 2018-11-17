@@ -216,6 +216,7 @@ namespace DimseLab
             get { return ændreProjektCommand; }
             set { ændreProjektCommand = value; }
         }
+
         #endregion
         #endregion
 
@@ -231,12 +232,12 @@ namespace DimseLab
         {
             Dimser = new ObservableCollection<Dims>()
             {
-                new Dims("IR-modtager", new List<string>(), "", "", false, null),
-                new Dims("IR-sender", new List<string>(), "", "", false, null),
-                new Dims("Lygte", new List<string>(), "", "", false, null),
-                new Dims("Skruetrækker", new List<string>(), "", "", false, null),
-                new Dims("Badedyr", new List<string>(), "", "", false, null),
-                new Dims("Kaffemaskine", new List<string>(), "", "", false, null)
+                new Dims("IR-modtager", new List<string>(), "", "", "Ikke udlånt", "", null),
+                new Dims("IR-sender", new List<string>(), "", "", "Ikke udlånt", "", null),
+                new Dims("Lygte", new List<string>(), "", "", "Ikke udlånt", "", null),
+                new Dims("Skruetrækker", new List<string>(), "", "", "Ikke udlånt", "", null),
+                new Dims("Badedyr", new List<string>(), "", "", "Ikke udlånt", "", null),
+                new Dims("Kaffemaskine", new List<string>(), "", "", "Ikke udlånt", "", null)
             };
         }
 
@@ -270,7 +271,7 @@ namespace DimseLab
                             new List<string>() {"IR", "Modtager", "Robot"}, 
                             DateTime.Now.ToString("d"),
                             DateTime.Now.AddDays(14).ToString("d"),
-                            true, null)
+                            "Udlånt", "", null)
                     }),
                 new Projekt("Projekt 2", "Ild", 
                     new ObservableCollection<Deltager>()
@@ -284,7 +285,7 @@ namespace DimseLab
                             new List<string>() {"Lys", "Robot"}, 
                             DateTime.Now.ToString("d"),
                             DateTime.Now.AddDays(14).ToString("d"),
-                            true, null)
+                            "Udlånt", "", null)
                     })
             };
         }
@@ -318,13 +319,14 @@ namespace DimseLab
             {
                 if (SelectedDimsOversigt != null)
                 {
-                    if (!SelectedProjekt.Dimser.Contains(SelectedDimsOversigt) && !SelectedDimsOversigt.Udlånt)
+                    if (!SelectedProjekt.Dimser.Contains(SelectedDimsOversigt) && SelectedDimsOversigt.Udlånt != "Udlånt")
                     {
                         SelectedProjekt.Dimser.Add(SelectedDimsOversigt);
                         SelectedDimsOversigt.Projekt = SelectedProjekt;
                         SelectedDimsOversigt.Udlånsdato = DateTime.Now.ToString("d");
                         SelectedDimsOversigt.Afleveringsdato = DateTime.Now.AddDays(14).ToString("d");
-                        SelectedDimsOversigt.Udlånt = true;
+                        SelectedDimsOversigt.UdlånsInfo = " af " + SelectedDimsOversigt.Projekt.Navn + " til og med " + SelectedDimsOversigt.Afleveringsdato;
+                        SelectedDimsOversigt.Udlånt = "Udlånt";
                         SelectedDimsOversigt.TextColor = new SolidColorBrush(Colors.Red);
                     }
                 }
@@ -353,7 +355,8 @@ namespace DimseLab
                 {
                     Dimser[Dimser.IndexOf(SelectedDims)].Udlånsdato = "";
                     Dimser[Dimser.IndexOf(SelectedDims)].Afleveringsdato = "";
-                    Dimser[Dimser.IndexOf(SelectedDims)].Udlånt = false;
+                    SelectedDimsOversigt.UdlånsInfo = "";
+                    Dimser[Dimser.IndexOf(SelectedDims)].Udlånt = "Ikke udlånt";
                     Dimser[Dimser.IndexOf(SelectedDims)].TextColor = new SolidColorBrush(Colors.Green);
                     SelectedProjekt.Dimser.Remove(SelectedDims);
                 }
