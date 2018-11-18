@@ -333,6 +333,7 @@ namespace DimseLab
                             SelectedDimsOversigt.Projekt = SelectedProjekt;
                             SelectedDimsOversigt.Udlånsdato = DateTime.Now.ToString("d");
                             SelectedDimsOversigt.Afleveringsdato = DateTime.Now.AddDays(n).ToString("d");
+                            UdlånsDage = null;
                             SelectedDimsOversigt.UdlånsInfo = " af " + SelectedDimsOversigt.Projekt.Navn + " til og med " + SelectedDimsOversigt.Afleveringsdato;
                             SelectedDimsOversigt.Udlånt = "Udlånt";
                             SelectedDimsOversigt.TextColor = new SolidColorBrush(Colors.Red);
