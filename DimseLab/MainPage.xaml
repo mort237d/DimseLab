@@ -23,8 +23,8 @@
             <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
 
-        <Border Grid.ColumnSpan="2" Background="#D6E4FF"/>
-        <Border Grid.Row="1" Grid.ColumnSpan="2" Background="#84ADFF"/>
+        <Border Grid.ColumnSpan="2" Background="#6DAEDB"/>
+        <Border Grid.Row="1" Grid.ColumnSpan="2" Background="#173753"/>
 
         <!-- Projekter -->
         <StackPanel Orientation="Vertical" Margin="10,0,0,0">
@@ -40,11 +40,11 @@
                 </ListView.ItemTemplate>
             </ListView>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,5,0,0">
-                <TextBox PlaceholderText="Navn" Text="{Binding NavnProjektTB, Mode=TwoWay}" MinWidth="100" MaxWidth="150"/>
-                <TextBox PlaceholderText="Beskrivelse" Text="{Binding BeskrivelseProjektTB, Mode=TwoWay}"  Margin="2,0,0,0" MinWidth="100" MaxWidth="150"/>
-                <Button Width="50" Content="+" Margin="5,0,0,0"  Background="#41FF6C" Command="{Binding TilføjProjektCommand}" ></Button>
-                <Button Width="50" Content="-" Background="#FF4146" Command="{Binding SletProjektCommand}"></Button>
-                <Button Width="50" Content="?" Command="{Binding ÆndreProjektCommand}"></Button>
+                <TextBox Background="#E6E1C5" PlaceholderText="Navn" Text="{Binding NavnProjektTB, Mode=TwoWay}" MinWidth="100" MaxWidth="150"/>
+                <TextBox Background="#E6E1C5" PlaceholderText="Beskrivelse" Text="{Binding BeskrivelseProjektTB, Mode=TwoWay}"  Margin="2,0,0,0" MinWidth="100" MaxWidth="150"/>
+                <Button Width="50" Content="+" Margin="5,0,0,0"  Background="#55DDE0" BorderBrush="#173753" BorderThickness="1" Command="{Binding TilføjProjektCommand}" ></Button>
+                <Button Width="50" Content="-" Background="#55DDE0" BorderBrush="#173753" BorderThickness="1" Command="{Binding SletProjektCommand}"></Button>
+                <Button Width="50" Content="⇋" Background="#55DDE0" BorderBrush="#173753" BorderThickness="1" Command="{Binding ÆndreProjektCommand}"></Button>
             </StackPanel>
         </StackPanel>
 
@@ -68,30 +68,30 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"  Margin="0,5,0,0">
                 <TextBox PlaceholderText="Navn" Text="{Binding NavnDeltagerTB, Mode=TwoWay}" MinWidth="70" MaxWidth="150"/>
                 <TextBox PlaceholderText="E-mail" Text="{Binding EmailDeltagerTB, Mode=TwoWay}"  Margin="2,0,0,0" MinWidth="70" MaxWidth="150"/>
-                <Button Width="50" Content="+" Margin="5,0,0,0" Background="#41FF6C" Command="{Binding TilføjDeltagerCommand}"></Button>
-                <Button Width="50" Content="-" Background="#FF4146" Command="{Binding SletDeltagerCommand}"></Button>
-                <Button Width="50" Content="?" Command="{Binding ÆndreDeltagerCommand}"></Button>
+                <Button Width="50" Content="+" Margin="5,0,0,0" Background="#55DDE0" BorderBrush="#173753" BorderThickness="1" Command="{Binding TilføjDeltagerCommand}"></Button>
+                <Button Width="50" Content="-" Background="#55DDE0" BorderBrush="#173753" BorderThickness="1" Command="{Binding SletDeltagerCommand}"></Button>
+                <Button Width="50" Content="⇋ " Background="#55DDE0" BorderBrush="#173753" BorderThickness="1" Command="{Binding ÆndreDeltagerCommand}"></Button>
             </StackPanel>
         </StackPanel>
 
         <!-- Dimser -->
         <StackPanel Orientation="Vertical" Margin="10,0,0,0" Grid.Row="1">
             <TextBlock FontWeight="Bold" Text="Dimser:"></TextBlock>
-            <ListView ItemsSource="{Binding SelectedProjekt.Dimser, Mode=TwoWay}" SelectedItem="{Binding SelectedDims, Mode=TwoWay}" Width="auto" Height="450" BorderBrush="Black" BorderThickness="1">
+            <ListView ItemsSource="{Binding SelectedProjekt.Dimser, Mode=TwoWay}" SelectedItem="{Binding SelectedDims, Mode=TwoWay}" Width="auto" Height="450" BorderBrush="AliceBlue" BorderThickness="1">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock FontWeight="bold" FontSize="15" Text="{Binding Navn}"></TextBlock>
+                                <TextBlock Foreground="AliceBlue" FontWeight="bold" FontSize="15" Text="{Binding Navn}"></TextBlock>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <!--<TextBlock Width="90" FontWeight="Bold" FontSize="11" Text="Keywords: "></TextBlock>
                                     <ListView ItemsSource="{Binding Keywords}" HorizontalContentAlignment="Left"></ListView>-->
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock FontSize="11" Text="{Binding Udlånsdato}"></TextBlock>
-                                <TextBlock Width="90" FontWeight="Bold" FontSize="11" Text=" - "></TextBlock>
-                                <TextBlock FontSize="11" Text="{Binding Afleveringsdato}"></TextBlock>
+                                <TextBlock Foreground="AliceBlue" FontSize="11" Text="{Binding Udlånsdato}"></TextBlock>
+                                <TextBlock Foreground="AliceBlue" Width="90" FontWeight="Bold" FontSize="11" Text=" - "></TextBlock>
+                                <TextBlock Foreground="AliceBlue" FontSize="11" Text="{Binding Afleveringsdato}"></TextBlock>
                             </StackPanel>
                         </StackPanel>
                     </DataTemplate>
@@ -124,7 +124,10 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button Content="Lån Dims" HorizontalAlignment="Right" Margin="0,10,0,0" Width="150" Background="#4181FF" Command="{Binding TilføjDimsCommand}"></Button>
+            <StackPanel Margin="0,10,0,0" HorizontalAlignment="Right" Orientation="Horizontal">
+                <TextBox PlaceholderText="Antal dage" Text="{Binding UdlånsDage, Mode=TwoWay}"></TextBox>
+                <Button Content="Lån Dims" Width="150" Margin="5,0,0,0" Background="#4181FF" Command="{Binding TilføjDimsCommand}"></Button>
+            </StackPanel>
         </StackPanel>
 
     </Grid>

@@ -5,7 +5,9 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Windows.UI;
+using Windows.UI.Popups;
 using Windows.UI.Xaml.Media;
 using DimseLab.Annotations;
 using GalaSoft.MvvmLight.Command;
@@ -57,6 +59,17 @@ namespace DimseLab
             set
             {
                 _dimser = value; 
+                OnPropertyChanged();
+            }
+        }
+
+        private string _udlånsDage;
+        public string UdlånsDage
+        {
+            get { return _udlånsDage; }
+            set
+            {
+                _udlånsDage = value;
                 OnPropertyChanged();
             }
         }
@@ -314,30 +327,36 @@ namespace DimseLab
                 {
                     if (!SelectedProjekt.Dimser.Contains(SelectedDimsOversigt) && SelectedDimsOversigt.Udlånt != "Udlånt")
                     {
-                        SelectedProjekt.Dimser.Add(SelectedDimsOversigt);
-                        SelectedDimsOversigt.Projekt = SelectedProjekt;
-                        SelectedDimsOversigt.Udlånsdato = DateTime.Now.ToString("d");
-                        SelectedDimsOversigt.Afleveringsdato = DateTime.Now.AddDays(14).ToString("d");
-                        SelectedDimsOversigt.UdlånsInfo = " af " + SelectedDimsOversigt.Projekt.Navn + " til og med " + SelectedDimsOversigt.Afleveringsdato;
-                        SelectedDimsOversigt.Udlånt = "Udlånt";
-                        SelectedDimsOversigt.TextColor = new SolidColorBrush(Colors.Red);
+                        if (double.TryParse(UdlånsDage, out double n))
+                        {
+                            SelectedProjekt.Dimser.Add(SelectedDimsOversigt);
+                            SelectedDimsOversigt.Projekt = SelectedProjekt;
+                            SelectedDimsOversigt.Udlånsdato = DateTime.Now.ToString("d");
+                            SelectedDimsOversigt.Afleveringsdato = DateTime.Now.AddDays(n).ToString("d");
+                            SelectedDimsOversigt.UdlånsInfo = " af " + SelectedDimsOversigt.Projekt.Navn + " til og med " + SelectedDimsOversigt.Afleveringsdato;
+                            SelectedDimsOversigt.Udlånt = "Udlånt";
+                            SelectedDimsOversigt.TextColor = new SolidColorBrush(Colors.Red);
+                        }
                     }
                 }
             }
         }
 
-        private void sletProjekt()
+        private async void sletProjekt()
         {
             if (SelectedProjekt != null)
             {
-                Projekter.Remove(SelectedProjekt);
+                await Besked("Slet projekt",
+                    "Du er ved at slette et projekt.\r\nEr du sikker på at du vil slette " + SelectedProjekt.Navn + "?");
             }
         }
-        private void sletDeltager()
+        private async void sletDeltager()
         {
             if (SelectedProjekt != null)
             {
-                SelectedProjekt.Deltagere.Remove(SelectedDeltager);
+                await Besked("Slet deltager", 
+                    "Du er ved at slette en deltager.\r\nEr du sikker på at du vil slette " + SelectedDeltager.Navn + " fra " + SelectedProjekt.Navn + "?");
+                
             }
         }
         private void sletDims()
@@ -356,69 +375,106 @@ namespace DimseLab
             }
         }
 
-        private void ændreProjekt()
+        private async void ændreProjekt()
         {
             if (SelectedProjekt != null)
             {
-                if (NavnProjektTB == null)
+                if (NavnProjektTB == null || BeskrivelseProjektTB == null)
                 {
-                    NavnProjektTB = SelectedProjekt.Navn;
+                    if (NavnProjektTB == null)
+                    {
+                        NavnProjektTB = SelectedProjekt.Navn;
+                    }
+                    if (BeskrivelseProjektTB == null)
+                    {
+                        BeskrivelseProjektTB = SelectedProjekt.Beskrivelse;
+                    }
                 }
-                else if (NavnProjektTB != SelectedProjekt.Navn)
+                else if (NavnProjektTB != SelectedProjekt.Navn || BeskrivelseProjektTB != SelectedProjekt.Beskrivelse)
                 {
-                    SelectedProjekt.Navn = NavnProjektTB;
-                }
-
-                if (BeskrivelseProjektTB == null)
-                {
-                    BeskrivelseProjektTB = SelectedProjekt.Beskrivelse;
-                }
-                else if (BeskrivelseProjektTB != SelectedProjekt.Beskrivelse)
-                {
-                    SelectedProjekt.Beskrivelse = BeskrivelseProjektTB;
-                }
-
-                btncount++;
-
-                if (btncount == 2)
-                {
-                    NavnProjektTB = null;
-                    BeskrivelseProjektTB = null;
-
-                    btncount = 0;
+                    await Besked("Ændre projekt",
+                        "Du er ved at ændre et projekt." +
+                        "\r\nEr du sikker på at du vil ændre navn fra \"" + SelectedProjekt.Navn + "\" til \"" + NavnProjektTB + "\"?" +
+                        "\r\nSamt \"" + SelectedProjekt.Beskrivelse + "\" til \"" + BeskrivelseProjektTB + "\"");
                 }
             }
         }
-        private void ændreDeltager()
+        private async void ændreDeltager()
         {
             if (SelectedDeltager != null)
             {
-                if (NavnDeltagerTB == null)
+                if (NavnDeltagerTB == null || EmailDeltagerTB == null)
                 {
-                    NavnDeltagerTB = SelectedDeltager.Navn;
+                    if (NavnDeltagerTB == null)
+                    {
+                        NavnDeltagerTB = SelectedDeltager.Navn;
+                    }
+                    if (EmailDeltagerTB == null)
+                    {
+                        EmailDeltagerTB = SelectedDeltager.Email;
+                    }
                 }
-                else if (NavnDeltagerTB != SelectedDeltager.Navn)
+                else if (NavnDeltagerTB != SelectedDeltager.Navn || EmailDeltagerTB != SelectedDeltager.Email)
+                {
+                    await Besked("Ændre deltager",
+                        "Du er ved at ændre en deltager." +
+                        "\r\nEr du sikker på at du vil ændre navn fra \"" + SelectedDeltager.Navn + "\" til \"" + NavnDeltagerTB + "\"?" +
+                        "\r\nSamt \"" + SelectedDeltager.Email + "\" til \"" + EmailDeltagerTB + "\"");
+                }
+            }
+        }
+
+        private async Task Besked(string title, string content)
+        {
+            var yesCommand = new UICommand("Ja", cmd => { });
+            var noCommand = new UICommand("Nej", cmd => { });
+
+            var dialog = new MessageDialog(content, title);
+            dialog.Options = MessageDialogOptions.None;
+            dialog.Commands.Add(yesCommand);
+
+            dialog.DefaultCommandIndex = 0;
+            dialog.CancelCommandIndex = 0;
+
+            if (noCommand != null)
+            {
+                dialog.Commands.Add(noCommand);
+                dialog.CancelCommandIndex = (uint) dialog.Commands.Count - 1;
+            }
+
+            var command = await dialog.ShowAsync();
+
+            if (command == yesCommand)
+            {
+                if (title == "Slet deltager") SelectedProjekt.Deltagere.Remove(SelectedDeltager);
+                else if (title == "Slet projekt") Projekter.Remove(SelectedProjekt);
+                else if (title == "Ændre projekt")
+                {
+                    SelectedProjekt.Navn = NavnProjektTB;
+                    SelectedProjekt.Beskrivelse = BeskrivelseProjektTB;
+                    NavnProjektTB = null;
+                    BeskrivelseProjektTB = null;
+                }
+                else if (title == "Ændre deltager")
                 {
                     SelectedDeltager.Navn = NavnDeltagerTB;
-                }
-
-                if (EmailDeltagerTB == null)
-                {
-                    EmailDeltagerTB = SelectedDeltager.Email;
-                }
-                else if (EmailDeltagerTB != SelectedDeltager.Email)
-                {
                     SelectedDeltager.Email = EmailDeltagerTB;
+                    NavnDeltagerTB = null;
+                    EmailDeltagerTB = null;
+                }
+            }
+            else if (command == noCommand)
+            {
+                if (title == "Ændre projekt")
+                {
+                    NavnProjektTB = null;
+                    BeskrivelseProjektTB = null;
                 }
 
-                btncount++;
-
-                if (btncount == 2)
+                if (title == "Ændre deltager")
                 {
                     NavnDeltagerTB = null;
                     EmailDeltagerTB = null;
-
-                    btncount = 0;
                 }
             }
         }
