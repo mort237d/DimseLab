@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Windows.UI;
 using Windows.UI.Xaml.Media;
@@ -224,8 +225,8 @@ namespace DimseLab
         {
             TilføjRelayCommands();
 
-            LavListeAfProjekter();
             LavListeAfDimser();
+            LavListeAfProjekter();
         }
 
         private void LavListeAfDimser()
@@ -267,11 +268,7 @@ namespace DimseLab
                     },
                     new ObservableCollection<Dims>()
                     {
-                        new Dims("IR-modtager", 
-                            new List<string>() {"IR", "Modtager", "Robot"}, 
-                            DateTime.Now.ToString("d"),
-                            DateTime.Now.AddDays(14).ToString("d"),
-                            "Udlånt", "", null)
+                        
                     }),
                 new Projekt("Projekt 2", "Ild", 
                     new ObservableCollection<Deltager>()
@@ -281,11 +278,7 @@ namespace DimseLab
                     },
                     new ObservableCollection<Dims>()
                     {
-                        new Dims("lys-komponent", 
-                            new List<string>() {"Lys", "Robot"}, 
-                            DateTime.Now.ToString("d"),
-                            DateTime.Now.AddDays(14).ToString("d"),
-                            "Udlånt", "", null)
+                        
                     })
             };
         }
