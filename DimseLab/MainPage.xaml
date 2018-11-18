@@ -21,6 +21,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -33,7 +34,7 @@
         -->
 
         <!-- Projekter -->
-        <StackPanel Orientation="Vertical" Margin="10,0,0,0">
+        <StackPanel Orientation="Vertical" Margin="10,0,0,0" Grid.ColumnSpan="2">
             <TextBlock Foreground="#173753" FontWeight="Bold" Text="Projekter:"></TextBlock>
             <ListView Background="#649FC8" ItemsSource="{Binding Projekter}" SelectedItem="{Binding SelectedProjekt, Mode=TwoWay}" Width="auto" Height="200" BorderBrush="Black" BorderThickness="1">
                 <ListView.ItemTemplate>
@@ -55,9 +56,9 @@
         </StackPanel>
 
         <!-- Deltagere -->
-        <StackPanel Orientation="Vertical" Margin="10,0,10,0" Grid.Column="1">
+        <StackPanel Orientation="Vertical" Margin="10,0,10,0" Grid.Row="1">
             <TextBlock Foreground="#173753" FontWeight="Bold" Text="Deltagere:"></TextBlock>
-            <ListView Background="#649FC8" ItemsSource="{Binding SelectedProjekt.Deltagere, Mode=TwoWay}"  SelectedItem="{Binding SelectedDeltager, Mode=TwoWay}" Width="auto" Height="200" BorderBrush="#173753" BorderThickness="1">
+            <ListView Background="#649FC8" ItemsSource="{Binding SelectedProjekt.Deltagere, Mode=TwoWay}"  SelectedItem="{Binding SelectedDeltager, Mode=TwoWay}" Width="auto" Height="450" BorderBrush="#173753" BorderThickness="1">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel>
@@ -81,7 +82,7 @@
         </StackPanel>
 
         <!-- Dimser -->
-        <StackPanel Orientation="Vertical" Margin="10,0,0,0" Grid.Row="1">
+        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="1">
             <TextBlock Foreground="#173753" FontWeight="Bold" Text="Dimser:"></TextBlock>
             <ListView Background="#649FC8" ItemsSource="{Binding SelectedProjekt.Dimser, Mode=TwoWay}" SelectedItem="{Binding SelectedDims, Mode=TwoWay}" Width="auto" Height="450" BorderBrush="#173753" BorderThickness="1">
                 <ListView.ItemTemplate>
@@ -107,9 +108,9 @@
         </StackPanel>
 
         <!-- Dimser til låns -->
-        <StackPanel Orientation="Vertical" Margin="10,0,10,0" Grid.Column="1" Grid.Row ="1">
+        <StackPanel Orientation="Vertical" Margin="10,0,10,0" Grid.Column="2" Grid.RowSpan ="2">
             <TextBlock Foreground="#173753" FontWeight="Bold" Text="Oversigt over Dimser:"></TextBlock>
-            <ListView Background="#649FC8" ItemsSource="{Binding Dimser, Mode=TwoWay}" SelectedItem="{Binding SelectedDimsOversigt, Mode=TwoWay}" Width="auto" Height="450" BorderBrush="#173753" BorderThickness="1">
+            <ListView Background="#649FC8" ItemsSource="{Binding Dimser, Mode=TwoWay}" SelectedItem="{Binding SelectedDimsOversigt, Mode=TwoWay}" Width="auto" Height="718" BorderBrush="#173753" BorderThickness="1">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel>
