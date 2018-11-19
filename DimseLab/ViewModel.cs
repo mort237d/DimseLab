@@ -246,12 +246,24 @@ namespace DimseLab
         {
             Dimser = new ObservableCollection<Dims>()
             {
-                new Dims("IR-modtager", new List<string>(), "", "", "Ikke udlånt", "", null),
-                new Dims("IR-sender", new List<string>(), "", "", "Ikke udlånt", "", null),
-                new Dims("Lygte", new List<string>(), "", "", "Ikke udlånt", "", null),
-                new Dims("Skruetrækker", new List<string>(), "", "", "Ikke udlånt", "", null),
-                new Dims("Badedyr", new List<string>(), "", "", "Ikke udlånt", "", null),
-                new Dims("Kaffemaskine", new List<string>(), "", "", "Ikke udlånt", "", null)
+                new Dims("IR-modtager"),
+                new Dims("IR-sender"),
+                new Dims("Lygte"),
+                new Dims("Skruetrækker"),
+                new Dims("Badedyr"),
+                new Dims("Kaffemaskine"),
+                new Dims("Lodde-Kolbe"),
+                new Dims("Tin"),
+                new Dims("DimseDut"),
+                new Dims("Tingest"),
+                new Dims("Makrel"),
+                new Dims("Te-Kande"),
+                new Dims("Madpakke"),
+                new Dims("Sild"),
+                new Dims("Tv"),
+                new Dims("Radio"),
+                new Dims("Haj-Tand"),
+                new Dims("Tandpasta")
             };
         }
 
@@ -277,22 +289,22 @@ namespace DimseLab
                     new ObservableCollection<Deltager>()
                     {
                         new Deltager("Morten", "mail.dk"),
+                        new Deltager("Kurt", "mail.com"),
+                        new Deltager("Kurt", "mail.com"),
+                        new Deltager("Kurt", "mail.com"),
                         new Deltager("Kurt", "mail.com")
                     },
-                    new ObservableCollection<Dims>()
-                    {
-                        
-                    }),
+                    new ObservableCollection<Dims>()),
                 new Projekt("Projekt 2", "Ild", 
                     new ObservableCollection<Deltager>()
                     {
                         new Deltager("Mads", "mail.org"),
+                        new Deltager("Karsten", "mail.dk"),
+                        new Deltager("Karsten", "mail.dk"),
+                        new Deltager("Karsten", "mail.dk"),
                         new Deltager("Karsten", "mail.dk")
                     },
-                    new ObservableCollection<Dims>()
-                    {
-                        
-                    })
+                    new ObservableCollection<Dims>())
             };
         }
 

@@ -87,6 +87,20 @@ namespace DimseLab
             TextColor = new SolidColorBrush(Colors.Green);
         }
 
+        public Dims(string navn)
+        {
+            Navn = navn;
+            Keywords = new List<string>();
+            Udlånsdato = "";
+            Afleveringsdato = "";
+            Udlånt = "Ikke Udlånt";
+            UdlånsInfo = "";
+
+            Projekt = null;
+
+            TextColor = new SolidColorBrush(Colors.Green);
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
