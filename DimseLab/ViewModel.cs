@@ -40,8 +40,6 @@ namespace DimseLab
         public ObservableCollection<Projekt> _projekter;
         public ObservableCollection<Dims> _dimser;
 
-        private int btncount = 0;
-
         #endregion
 
         public ObservableCollection<Projekt> Projekter
@@ -318,6 +316,7 @@ namespace DimseLab
                 NavnProjektTB = null;
                 BeskrivelseProjektTB = null;
             }
+            else FejlBesked("Manglende input", "Der mangler enten navn eller beskrivelse, som information til dit projekt");
         }
         private void tilføjDeltager()
         {
@@ -325,11 +324,20 @@ namespace DimseLab
             {
                 if (NavnDeltagerTB != null && EmailDeltagerTB != null)
                 {
-                    SelectedProjekt.Deltagere.Add(new Deltager(NavnDeltagerTB, EmailDeltagerTB));
-                    NavnDeltagerTB = null;
-                    EmailDeltagerTB = null;
+                    if (!EmailDeltagerTB.Contains("@edu.easj.dk") && !EmailDeltagerTB.Contains("@easj.dk"))
+                    {
+                        FejlBesked("Forkert email", "Du skal have en @edu.easj.dk eller @easj.dk mail");
+                    }
+                    else
+                    {
+                        SelectedProjekt.Deltagere.Add(new Deltager(NavnDeltagerTB, EmailDeltagerTB));
+                        NavnDeltagerTB = null;
+                        EmailDeltagerTB = null;
+                    }
                 }
+                else FejlBesked("Manglende input", "Der mangler enten navn eller email, som information til din deltager");
             }
+            else FejlBesked("Intet projekt valgt", "Vælg venligst et projekt for at tilføje en deltager.");
         }
         private void tilføjDims()
         {
@@ -346,31 +354,38 @@ namespace DimseLab
                             SelectedDimsOversigt.Udlånsdato = DateTime.Now.ToString("d");
                             SelectedDimsOversigt.Afleveringsdato = DateTime.Now.AddDays(n).ToString("d");
                             UdlånsDage = null;
-                            SelectedDimsOversigt.UdlånsInfo = " af " + SelectedDimsOversigt.Projekt.Navn + " til og med " + SelectedDimsOversigt.Afleveringsdato;
+                            SelectedDimsOversigt.UdlånsInfo =
+                                " af " + SelectedDimsOversigt.Projekt.Navn + " til og med " +
+                                SelectedDimsOversigt.Afleveringsdato;
                             SelectedDimsOversigt.Udlånt = "Udlånt";
                             SelectedDimsOversigt.TextColor = new SolidColorBrush(Colors.Red);
                         }
+                        else
+                            FejlBesked("Forkert input", "Du kan kun skrive tal, da du skriver hvor mange dage dimsen skal lånes ud.");
                     }
+                    else FejlBesked("Dims allerede udlånt", "Dimsen er allerede lånt ud til " + SelectedDimsOversigt.Projekt.Navn + ". Du kan vælge projektet fra oversigten for kontaktoplysninger.");
                 }
+                else FejlBesked("Ingen dims valgt", "Vælg venligst en dims for at låne den.");
             }
+            else FejlBesked("Intet projekt valgt", "Vælg venligst et projekt for at tilføje en dims.");
         }
 
         private async void sletProjekt()
         {
-            if (SelectedProjekt != null)
-            {
-                await Besked("Slet projekt",
-                    "Du er ved at slette et projekt.\r\nEr du sikker på at du vil slette " + SelectedProjekt.Navn + "?");
-            }
+            if (SelectedProjekt != null)await BeskedMedKnapper("Slet projekt",
+                    "Du er ved at slette et projekt.\r\nEr du sikker på at du vil slette " + SelectedProjekt.Navn +
+                    "?");
+            else FejlBesked("Intet projekt valgt", "Vælg et projekt for at slette det.");
         }
         private async void sletDeltager()
         {
             if (SelectedProjekt != null)
             {
-                await Besked("Slet deltager", 
+                if (SelectedDeltager != null) await BeskedMedKnapper("Slet deltager",
                     "Du er ved at slette en deltager.\r\nEr du sikker på at du vil slette " + SelectedDeltager.Navn + " fra " + SelectedProjekt.Navn + "?");
-                
+                else FejlBesked("Ingen deltager valgt", "Vælg en deltager for at slette.");
             }
+            else FejlBesked("Intet projekt valgt", "Vælg et projekt for at slette det.");
         }
         private void sletDims()
         {
@@ -385,7 +400,9 @@ namespace DimseLab
                     Dimser[Dimser.IndexOf(SelectedDims)].TextColor = new SolidColorBrush(Colors.Green);
                     SelectedProjekt.Dimser.Remove(SelectedDims);
                 }
+                else FejlBesked("Ingen dims valgt", "Vælg en dims for at slette.");
             }
+            else FejlBesked("Intet projekt valgt", "Vælg et projekt for at slette det.");
         }
 
         private async void ændreProjekt()
@@ -405,12 +422,13 @@ namespace DimseLab
                 }
                 else if (NavnProjektTB != SelectedProjekt.Navn || BeskrivelseProjektTB != SelectedProjekt.Beskrivelse)
                 {
-                    await Besked("Ændre projekt",
+                    await BeskedMedKnapper("Ændre projekt",
                         "Du er ved at ændre et projekt." +
                         "\r\nEr du sikker på at du vil ændre navn fra \"" + SelectedProjekt.Navn + "\" til \"" + NavnProjektTB + "\"?" +
                         "\r\nSamt \"" + SelectedProjekt.Beskrivelse + "\" til \"" + BeskrivelseProjektTB + "\"");
                 }
             }
+            else FejlBesked("Intet projekt valgt", "Vælg et projekt for at ændre det.");
         }
         private async void ændreDeltager()
         {
@@ -429,15 +447,16 @@ namespace DimseLab
                 }
                 else if (NavnDeltagerTB != SelectedDeltager.Navn || EmailDeltagerTB != SelectedDeltager.Email)
                 {
-                    await Besked("Ændre deltager",
+                    await BeskedMedKnapper("Ændre deltager",
                         "Du er ved at ændre en deltager." +
                         "\r\nEr du sikker på at du vil ændre navn fra \"" + SelectedDeltager.Navn + "\" til \"" + NavnDeltagerTB + "\"?" +
                         "\r\nSamt \"" + SelectedDeltager.Email + "\" til \"" + EmailDeltagerTB + "\"");
                 }
             }
+            else FejlBesked("Intet projekt valgt", "Vælg et projekt for at ændre det.");
         }
 
-        private async Task Besked(string title, string content)
+        private async Task BeskedMedKnapper(string title, string content)
         {
             var yesCommand = new UICommand("Ja", cmd => { });
             var noCommand = new UICommand("Nej", cmd => { });
@@ -490,6 +509,17 @@ namespace DimseLab
                     EmailDeltagerTB = null;
                 }
             }
+        }
+
+        private async Task FejlBesked(string title, string content)
+        {
+            var dialog = new MessageDialog(content, title);
+            dialog.Options = MessageDialogOptions.None;
+
+            dialog.DefaultCommandIndex = 0;
+            dialog.CancelCommandIndex = 0;
+
+            var command = await dialog.ShowAsync();
         }
         #endregion
 
