@@ -13,10 +13,6 @@
         <local:ViewModel/>
     </Page.DataContext>
 
-    <UserControl.Resources>
-        <SolidColorBrush x:Name="SCB_Background" Color="#6DAEDB"></SolidColorBrush>
-    </UserControl.Resources>
-
     <Grid Background="#6DAEDB">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -35,7 +31,15 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel>
-                            <TextBlock Foreground="#173753" FontWeight="Bold" FontSize="15" Text="{Binding Navn}"></TextBlock>
+                            
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Foreground="#173753" FontWeight="Bold" FontSize="15" Text="{Binding Navn}"></TextBlock>
+                                <TextBlock Margin="10,0,0,0" VerticalAlignment="Center" Foreground="AliceBlue" FontStyle="Italic" FontSize="11" Text="("></TextBlock>
+                                <TextBlock VerticalAlignment="Center" Foreground="AliceBlue" FontStyle="Italic" FontSize="11" Text="{Binding StartDato}"></TextBlock>
+                                <TextBlock VerticalAlignment="Center" Foreground="AliceBlue" FontStyle="Italic" FontSize="11" Text=" - "></TextBlock>
+                                <TextBlock VerticalAlignment="Center" Foreground="AliceBlue" FontStyle="Italic" FontSize="11" Text="{Binding SlutDato}"></TextBlock>
+                                <TextBlock VerticalAlignment="Center" Foreground="AliceBlue" FontStyle="Italic" FontSize="11" Text=")"></TextBlock>
+                            </StackPanel>
                             <TextBlock Foreground="AliceBlue" FontStyle="Italic" FontSize="11" Text="{Binding Beskrivelse}"></TextBlock>
                         </StackPanel>
                     </DataTemplate>
@@ -44,6 +48,8 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,5,0,0">
                 <TextBox PlaceholderText="Navn" Text="{Binding NavnProjektTB, Mode=TwoWay}" MinWidth="100" MaxWidth="150" BorderBrush="#173753" BorderThickness="1" />
                 <TextBox PlaceholderText="Beskrivelse" Text="{Binding BeskrivelseProjektTB, Mode=TwoWay}"  Margin="2,0,0,0" MinWidth="100" MaxWidth="150" BorderBrush="#173753" BorderThickness="1" />
+                <TextBox PlaceholderText="start: MM/DD/YYYY" Text="{Binding StartDatoProjektTB, Mode=TwoWay}"  Margin="2,0,0,0" MinWidth="100" MaxWidth="150" BorderBrush="#173753" BorderThickness="1" />
+                <TextBox PlaceholderText="slut: MM/DD/YYYY" Text="{Binding SlutDatoProjektTB, Mode=TwoWay}"  Margin="2,0,0,0" MinWidth="100" MaxWidth="150" BorderBrush="#173753" BorderThickness="1" />
                 <Button Width="50" Content="+" Margin="5,0,0,0" Foreground="AliceBlue" Background="#395C6B" BorderBrush="#173753" BorderThickness="1" Command="{Binding TilføjProjektCommand}" ></Button>
                 <Button Width="50" Content="-" Foreground="AliceBlue" Background="#395C6B" BorderBrush="#173753" BorderThickness="1" Command="{Binding SletProjektCommand}"></Button>
                 <Button Width="50" Content="⇋" Foreground="AliceBlue" Background="#395C6B" BorderBrush="#173753" BorderThickness="1" Command="{Binding ÆndreProjektCommand}"></Button>

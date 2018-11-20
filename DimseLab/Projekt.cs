@@ -9,6 +9,8 @@ namespace DimseLab
     {
         public string _navn;
         public string _beskrivelse;
+        private string _startDato;
+        private string _slutDato;
 
         public ObservableCollection<Deltager> _deltagere;
         public ObservableCollection<Deltager> Deltagere
@@ -41,7 +43,6 @@ namespace DimseLab
                 OnPropertyChanged();
             }
         }
-
         public string Beskrivelse
         {
             get { return _beskrivelse; }
@@ -51,14 +52,36 @@ namespace DimseLab
                 OnPropertyChanged();
             }
         }
+        public string StartDato
+        {
+            get { return _startDato; }
+            set
+            {
+                _startDato = value;
+                OnPropertyChanged();
+            }
+        }
+        public string SlutDato
+        {
+            get { return _slutDato; }
+            set
+            {
+                _slutDato = value;
+                OnPropertyChanged();
+            }
+        }
 
-        public Projekt(string navn, string beskrivelse, ObservableCollection<Deltager> listeAfDeltagere, ObservableCollection<Dims> listeAfDimser)
+        public Projekt(string navn, string beskrivelse, string startDato, string slutDato,  ObservableCollection<Deltager> listeAfDeltagere, ObservableCollection<Dims> listeAfDimser)
         {
             Navn = navn;
             Beskrivelse = beskrivelse;
+            StartDato = startDato;
+            SlutDato = slutDato;
             Deltagere = listeAfDeltagere;
             Dimser = listeAfDimser;
         }
+
+        #region INotify
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -67,5 +90,7 @@ namespace DimseLab
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
     }
 }

@@ -28,7 +28,7 @@ namespace DimseLab
         private RelayCommand ændreProjektCommand;
         private RelayCommand ændreDeltagerCommand;
 
-        private string _navnProjektTB, _beskrivelseProjektTB, deltagerCollectionProjektTB;
+        private string _navnProjektTB, _beskrivelseProjektTB, _startDatoProjektTB, _slutDatoProjektTB;
         private string _navnDeltagerTB, _emailDeltagerTB;
         private string _navnDimsTB;
 
@@ -39,6 +39,8 @@ namespace DimseLab
 
         public ObservableCollection<Projekt> _projekter;
         public ObservableCollection<Dims> _dimser;
+
+        private string _udlånsDage;
 
         #endregion
 
@@ -61,7 +63,6 @@ namespace DimseLab
             }
         }
 
-        private string _udlånsDage;
         public string UdlånsDage
         {
             get { return _udlånsDage; }
@@ -154,12 +155,22 @@ namespace DimseLab
             }
         }
 
-        public string DeltagerCollectionProjektTB
+        public string StartDatoProjektTB
         {
-            get { return deltagerCollectionProjektTB; }
+            get { return _startDatoProjektTB; }
             set
             {
-                deltagerCollectionProjektTB = value;
+                _startDatoProjektTB = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string SlutDatoProjektTB
+        {
+            get { return _slutDatoProjektTB; }
+            set
+            {
+                _slutDatoProjektTB = value;
                 OnPropertyChanged();
             }
         }
@@ -228,7 +239,6 @@ namespace DimseLab
             get { return ændreProjektCommand; }
             set { ændreProjektCommand = value; }
         }
-
         #endregion
         #endregion
 
@@ -283,7 +293,7 @@ namespace DimseLab
         {
             _projekter = new ObservableCollection<Projekt>()
             {
-                new Projekt("Projekt 1", "Vand", 
+                new Projekt("Projekt 1", "Vand", DateTime.Now.ToString("d"), DateTime.Now.AddDays(14).ToString("d"),
                     new ObservableCollection<Deltager>()
                     {
                         new Deltager("Morten", "mail.dk"),
@@ -293,7 +303,7 @@ namespace DimseLab
                         new Deltager("Kurt", "mail.com")
                     },
                     new ObservableCollection<Dims>()),
-                new Projekt("Projekt 2", "Ild", 
+                new Projekt("Projekt 2", "Ild", DateTime.Now.ToString("d"), DateTime.Now.AddDays(14).ToString("d"),
                     new ObservableCollection<Deltager>()
                     {
                         new Deltager("Mads", "mail.org"),
@@ -310,13 +320,22 @@ namespace DimseLab
         #region KnapFunktioner
         private void tilføjProjekt()
         {
-            if (NavnProjektTB != null && BeskrivelseProjektTB != null)
+            if (NavnProjektTB != null && BeskrivelseProjektTB != null && StartDatoProjektTB != null && SlutDatoProjektTB != null)
             {
-                Projekter.Add(new Projekt(NavnProjektTB, BeskrivelseProjektTB, new ObservableCollection<Deltager>(), new ObservableCollection<Dims>()));
-                NavnProjektTB = null;
-                BeskrivelseProjektTB = null;
+                if (DateTime.TryParse(StartDatoProjektTB, out DateTime startDate) && DateTime.TryParse(StartDatoProjektTB, out DateTime endDate))
+                {
+                    String.Format("{0:d/MM/yyyy}", startDate);
+                    String.Format("{0:d/MM/yyyy}", endDate);
+
+                    Projekter.Add(new Projekt(NavnProjektTB, BeskrivelseProjektTB, startDate.ToString("d"), endDate.ToString("d"), new ObservableCollection<Deltager>(), new ObservableCollection<Dims>()));
+                    NavnProjektTB = null;
+                    BeskrivelseProjektTB = null;
+                    StartDatoProjektTB = null;
+                    SlutDatoProjektTB = null;
+                }
+                else FejlBesked("Forkert dato format", "Dato format skal være MM/DD/YYYY");
             }
-            else FejlBesked("Manglende input", "Der mangler enten navn eller beskrivelse, som information til dit projekt");
+            else FejlBesked("Manglende input", "Der mangler input(s), som information til dit projekt");
         }
         private void tilføjDeltager()
         {
